@@ -2,7 +2,7 @@
 -- Sample seed data for development / testing
 -- Default student PIN for all seeded students: 1234
 -- (PIN hash below corresponds to bcrypt hash of "1234")
--- Default admin password: ChangeMe123! (also seeded via database/init.js)
+-- Default admin password:ChangeMe123  (also seeded via database/init.js)
 -- =====================================================================
 
 USE ussd_result_attendance;
