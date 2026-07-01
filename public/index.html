@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>USSD ACADEMIC MANAGEMENT SYSTEM – Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-icon">🎓</div>
+      <h1 style="color: brown;"> <strong>USSD ACADEMIC MANAGEMENT SYSTEM</strong> </h1>
+      <h2 style="color: brown;"> <strong>Academic Portal</strong> </h2>
+    </div>
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label style="color: blue;"> <strong>USERNAME:</strong></label>
+        <input type="text" id="loginUsername" placeholder="Enter username" required />
+      </div>
+      <div class="form-group">
+        <label style="color: blue;"> <strong>PASSWORD:</strong></label>
+        <input type="password" id="loginPassword" placeholder="Enter password" required />
+      </div>
+      <div id="loginError" class="alert alert-error" style="display:none"></div>
+      <button type="submit" class="btn btn-primary btn-full" id="loginBtn">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appWrapper" style="display:none">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">🎓</div>
+      <div>
+        <div class="sidebar-title">CKT-UTAS</div>
+        <div class="sidebar-subtitle">Academic Portal</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="dashboard"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="#" class="nav-item" data-section="students"><span class="nav-icon">👥</span> Students</a>
+      <a href="#" class="nav-item" data-section="courses"><span class="nav-icon">📚</span> Courses</a>
+      <a href="#" class="nav-item" data-section="results"><span class="nav-icon">📝</span> Results</a>
+      <a href="#" class="nav-item" data-section="exams"><span class="nav-icon">🗓️</span> Examinations</a>
+      <a href="#" class="nav-item" data-section="attendance"><span class="nav-icon">✅</span> Attendance</a>
+      <a href="#" class="nav-item" data-section="simulator"><span class="nav-icon">📱</span> USSD Simulator</a>
+      <a href="#" class="nav-item" data-section="logs"><span class="nav-icon">🔍</span> Activity Logs</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div id="sidebarUser"></div>
+      <button class="btn btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-user" id="topbarUser"></div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- DASHBOARD -->
+      <section id="sec-dashboard" class="section active">
+        <h2 class="section-title">Dashboard Overview</h2>
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-info"><div class="stat-num" id="statStudents">—</div><div class="stat-label">Total Students</div></div></div>
+          <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-info"><div class="stat-num" id="statCourses">—</div><div class="stat-label">Total Courses</div></div></div>
+          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-info"><div class="stat-num" id="statSessions">—</div><div class="stat-label">Active Sessions</div></div></div>
+          <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-info"><div class="stat-num" id="statAttToday">—</div><div class="stat-label">Attendance Today</div></div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">Recent Activity</div>
+          <div class="card-body">
+            <table class="table" id="recentLogsTable">
+              <thead><tr><th>Action</th><th>Actor</th><th>Details</th><th>Time</th></tr></thead>
+              <tbody id="recentLogsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- STUDENTS -->
+      <section id="sec-students" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Student Management</h2>
+          <button class="btn btn-primary" id="btnAddStudent">+ Add Student</button>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="search-bar">
+              <input type="text" id="studentSearch" placeholder="Search by name, index number or phone…" />
+              <button class="btn btn-secondary" id="btnStudentSearch">Search</button>
+            </div>
+            <table class="table" id="studentsTable">
+              <thead><tr><th>Index No.</th><th>Name</th><th>Programme</th><th>Level</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="studentsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- COURSES -->
+      <section id="sec-courses" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Course Management</h2>
+          <button class="btn btn-primary" id="btnAddCourse">+ Add Course</button>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table class="table" id="coursesTable">
+              <thead><tr><th>Code</th><th>Name</th><th>Credits</th><th>Lecturer</th><th>Actions</th></tr></thead>
+              <tbody id="coursesTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <section id="sec-results" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Result Management</h2>
+          <div class="btn-group">
+            <button class="btn btn-primary" id="btnAddResult">+ Add Result</button>
+            <button class="btn btn-success" id="btnPublishResults">Publish Selected</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="filter-bar">
+              <select id="filterResultCourse"><option value="">All Courses</option></select>
+              <select id="filterResultSemester"><option value="">All Semesters</option><option value="1">Semester 1</option><option value="2">Semester 2</option></select>
+              <input type="text" id="filterResultYear" placeholder="Academic Year e.g. 2024/2025" />
+              <button class="btn btn-secondary" id="btnFilterResults">Filter</button>
+            </div>
+            <table class="table" id="resultsTable">
+              <thead><tr><th><input type="checkbox" id="selectAllResults" /></th><th>Student</th><th>Index No.</th><th>Course</th><th>Grade</th><th>Semester</th><th>Year</th><th>Published</th><th>Actions</th></tr></thead>
+              <tbody id="resultsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXAMINATIONS -->
+      <section id="sec-exams" class="section">
+        <div class="section-header">
+          <h2 class="section-title">Examination Management</h2>
+          <button class="btn btn-primary" id="btnAddExam">+ Add Exam</button>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table class="table" id="examsTable">
+              <thead><tr><th>Course</th><th>Date</th><th>Time</th><th>Venue</th><th>Instructions</th><th>Actions</th></tr></thead>
+              <tbody id="examsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ATTENDANCE -->
+      <section id="sec-attendance" class="section">
+        <h2 class="section-title">Attendance Management</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">Create Attendance Session</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label>Course</label>
+                <select id="attCourseSelect"></select>
+              </div>
+              <div class="form-group">
+                <label>Attendance Window (minutes)</label>
+                <input type="number" id="attWindowMin" value="20" min="1" max="60" />
+              </div>
+              <button class="btn btn-primary" id="btnCreateSession">Generate Attendance Code</button>
+              <div id="sessionResult" class="session-code-box" style="display:none"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Active Sessions</div>
+            <div class="card-body">
+              <table class="table" id="sessionsTable">
+                <thead><tr><th>Course</th><th>Code</th><th>Ends</th><th>Count</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="sessionsTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- Session Attendance Report (shown when a session is selected) -->
+        <div id="sessionReportWrap" style="display:none" class="card mt-1">
+          <div class="card-header">
+            Attendance Report – <span id="reportSessionLabel"></span>
+            <button class="btn btn-sm btn-secondary float-right" id="btnExportCsv">Export CSV</button>
+          </div>
+          <div class="card-body">
+            <table class="table" id="reportTable">
+              <thead><tr><th>Index No.</th><th>Name</th><th>Phone</th><th>Time</th><th>Action</th></tr></thead>
+              <tbody id="reportTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- USSD SIMULATOR -->
+      <section id="sec-simulator" class="section">
+        <h2 class="section-title">USSD Simulator</h2>
+        <p class="text-muted">Simulates a phone dialling *419#. Connects directly to the local USSD endpoint.</p>
+        <div class="simulator-wrap">
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-header">*419#</div>
+              <div id="simOutput" class="sim-output">Press "Dial" to start.</div>
+              <div class="sim-input-row">
+                <input type="text" id="simInput" placeholder="Enter option…" />
+              </div>
+              <div class="sim-buttons">
+                <button class="btn btn-sim-send" id="simSend">Send</button>
+                <button class="btn btn-sim-end" id="simEnd">End</button>
+                <button class="btn btn-sim-dial" id="simDial">Dial *419#</button>
+              </div>
+            </div>
+          </div>
+          <div class="sim-log-wrap">
+            <div class="card">
+              <div class="card-header">Session Log</div>
+              <div class="card-body">
+                <div id="simLog" class="sim-log"></div>
+              </div>
+            </div>
+            <div class="card mt-1">
+              <div class="card-header">Test Phone Number</div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Simulated Phone Number</label>
+                  <input type="text" id="simPhone" value="233241234567" placeholder="e.g. 233241234567" />
+                </div>
+                <p class="text-muted small">Must match a registered student's phone for attendance to work.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOGS -->
+      <section id="sec-logs" class="section">
+        <h2 class="section-title">Activity Logs</h2>
+        <div class="card">
+          <div class="card-body">
+            <table class="table" id="logsTable">
+              <thead><tr><th>Time</th><th>Actor</th><th>Role</th><th>Action</th><th>Details</th><th>IP</th></tr></thead>
+              <tbody id="logsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /content-area -->
+  </main>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span id="modalTitle">Modal</span>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="modalCancelBtn">Cancel</button>
+      <button class="btn btn-primary" id="modalSaveBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
