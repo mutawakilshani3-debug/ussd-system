@@ -18,6 +18,7 @@ const attendanceRoutes = require('./routes/attendance');
 const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 // Security & parsing middleware
