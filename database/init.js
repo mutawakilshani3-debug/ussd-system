@@ -30,7 +30,7 @@ async function init() {
     console.log('✅ Schema applied (database + tables created)');
 
     // Hash default admin password
-    const adminPass = process.env.ADMIN_PASSWORD || 'ChangeMe123!';
+    const adminPass = process.env.ADMIN_PASSWORD || 'Mutawakil';
     const adminHash = await bcrypt.hash(adminPass, 10);
 
     // Upsert admin user

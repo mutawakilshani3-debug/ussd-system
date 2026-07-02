@@ -11,12 +11,12 @@ async function reset() {
     database: process.env.DB_NAME
   });
 
-  const hash = await bcrypt.hash('admin123', 10);
+  const hash = await bcrypt.hash('Mutawakil', 10);
   await conn.query(
     `UPDATE users SET password_hash = ? WHERE username = 'admin'`,
     [hash]
   );
-  console.log('✅ Password reset to: admin123');
+  console.log('✅ Password reset to: Mutawakil');
   await conn.end();
 }
 
